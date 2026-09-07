@@ -7,11 +7,19 @@ Providers de streaming en español para [Seanime](https://github.com/5rahim/sean
 | Provider | Tipo | search | findEpisodes | findEpisodeServer |
 |---|---|---|---|---|
 | AnimeAV1 | `onlinestream-provider` | ✅ | ✅ | ✅ (HLS, MP4Upload) |
+| JKAnime | `onlinestream-provider` | ✅ | ✅ | ✅ (Desu, Magi) |
 | AnimeFLV | — | ⬜ | ⬜ | ⬜ |
-| JKAnime | — | ⬜ | ⬜ | ⬜ |
 
-AnimeAV1 está verificado de punta a punta contra el sitio real (`npm run smoke:av1`),
-no sólo tipado.
+AnimeFLV (animeflv.net) está caído (Cloudflare 521) al momento de escribir esto;
+se retoma cuando vuelva. Los "mirrors" encontrados (animeflv.ws, animeflv.one)
+no son el sitio real — dos son parking pages, el otro tiene una plantilla
+distinta — así que no se construyó nada sobre ellos.
+
+Ambos providers activos están verificados de punta a punta contra el sitio
+real (`npm run smoke:av1`, `npm run smoke:jkanime`), no sólo tipados.
+
+JKAnime no soporta el servidor **Okru** (ok.ru): sus enlaces van firmados por
+el backend de ok.ru mismo, no por JKAnime, igual que AnimeAV1 no resuelve Mega.
 
 ## Cargar en Seanime sin compilar
 
@@ -40,9 +48,10 @@ Sólo si quieres publicar un `.js` en vez del `.ts`. Requiere Node ≥ 18.
 
 ```bash
 npm install
-npm run typecheck   # tsc --noEmit, es lo que más valor da
-npm run build:av1   # esbuild -> dist/animeav1/index.js
-npm run smoke:av1   # compila y ejecuta search/findEpisodes/findEpisodeServer contra el sitio real
+npm run typecheck      # tsc --noEmit, es lo que más valor da
+npm run build          # compila todos los providers a dist/
+npm run smoke:av1      # compila y ejecuta search/findEpisodes/findEpisodeServer de AnimeAV1 contra el sitio real
+npm run smoke:jkanime  # ídem para JKAnime
 ```
 
 `--format=esm` es deliberado: `iife` metería `class Provider` dentro de una
@@ -53,8 +62,15 @@ está activo (pasó en el primer build: el bundle quedó en 322 bytes, sin la
 clase). Por el mismo motivo de legibilidad el build minifica sintaxis y
 espacios pero **no identificadores**.
 
-`_smoke.mjs` no es parte del provider: es un arnés que simula lo mínimo que
-goja inyecta (`fetch` con `.text()`/`.json()` síncronos, `$store` en memoria)
-para poder ejecutar el bundle con Node y confirmar contra animeav1.com real
-que cada método devuelve lo esperado, incluyendo que el m3u8 resultante
-carga con las cabeceras declaradas.
+`_smoke.mjs` / `_smoke-jkanime.mjs` no son parte de los providers: son arneses
+que simulan lo mínimo que goja inyecta (`fetch` con `.text()`/`.json()`
+síncronos, `$store` en memoria, `res.cookies` reconstruido desde
+`Set-Cookie`) para poder ejecutar el bundle con Node y confirmar contra el
+sitio real que cada método devuelve lo esperado, incluyendo que el m3u8
+resultante carga.
+
+Cada `export {}` al principio de un `index.ts` es **sólo para `tsc`**: aísla
+el ámbito de ese fichero para que dos providers en el mismo proyecto no
+choquen sus `class Provider` / interfaces en un scope global compartido.
+Verificado que no aparece en el bundle final (`grep -c "^export" dist/**/index.js`
+da 0): esbuild lo reconoce como una lista de exports vacía y lo descarta.

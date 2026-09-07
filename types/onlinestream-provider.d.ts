@@ -109,7 +109,10 @@ declare interface FetchResponse {
     statusText: string
     ok: boolean
     url: string
+    /** Un solo valor por cabecera: si el servidor repite Set-Cookie, aquí solo llega el primero. Usa `cookies` para eso. */
     headers: Record<string, string>
+    /** Cada Set-Cookie de la respuesta, ya parseado a {nombre: valor}. Fuente: internal/goja_bindings/fetch.go, `f.response.Cookies()`. */
+    cookies: Record<string, string>
     text(): string
     json<T = any>(): T
 }

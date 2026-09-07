@@ -1,5 +1,12 @@
 /// <reference path="../../types/onlinestream-provider.d.ts" />
 
+// Sólo para `tsc`: aísla el ámbito de este fichero del de otros providers en
+// el mismo proyecto (dos `class Provider` en scope global chocan). El
+// runtime de Seanime evalúa cada extensión en su propia VM, así que esto no
+// le afecta; `--tree-shaking=false` evita que esbuild lo confunda con
+// código muerto y lo borre a él o (peor) a la clase.
+export {}
+
 /**
  * AnimeAV1 — provider de streaming en español para Seanime.
  *

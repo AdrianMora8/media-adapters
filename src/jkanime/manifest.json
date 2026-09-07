@@ -1,0 +1,14 @@
+{
+  "id": "jkanime-es",
+  "name": "JKAnime (ES)",
+  "version": "0.1.0",
+  "manifestURI": "https://raw.githubusercontent.com/AdrianMora8/media-adapters/main/src/jkanime/manifest.json",
+  "language": "typescript",
+  "type": "onlinestream-provider",
+  "description": "Streaming de anime subtitulado en español desde jkanime.net.",
+  "author": "Adrian",
+  "icon": "https://jkanime.net/favicon.ico",
+  "lang": "es",
+  "website": "https://jkanime.net",
+  "payloadURI": "https://raw.githubusercontent.com/AdrianMora8/media-adapters/main/src/jkanime/index.ts"
+}
