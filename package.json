@@ -4,10 +4,11 @@
   "private": true,
   "description": "Providers de streaming en español para Seanime",
   "scripts": {
-    "typecheck": "tsc --noEmit",
+    "typecheck": "tsc --noEmit -p tsconfig.animeav1.json && tsc --noEmit -p tsconfig.jkanime.json",
+    "verify-payload": "node scripts/verify-payload.mjs",
     "build:av1": "esbuild src/animeav1/index.ts --bundle --format=esm --target=es2017 --platform=neutral --minify-whitespace --minify-syntax --tree-shaking=false --outfile=dist/animeav1/index.js",
     "build:jkanime": "esbuild src/jkanime/index.ts --bundle --format=esm --target=es2017 --platform=neutral --minify-whitespace --minify-syntax --tree-shaking=false --outfile=dist/jkanime/index.js",
-    "build": "npm run typecheck && npm run build:av1 && npm run build:jkanime",
+    "build": "npm run typecheck && npm run verify-payload && npm run build:av1 && npm run build:jkanime",
     "watch:av1": "npm run build:av1 -- --watch",
     "smoke:av1": "npm run build:av1 && node _smoke.mjs",
     "smoke:jkanime": "npm run build:jkanime && node _smoke-jkanime.mjs"

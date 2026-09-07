@@ -69,8 +69,25 @@ síncronos, `$store` en memoria, `res.cookies` reconstruido desde
 sitio real que cada método devuelve lo esperado, incluyendo que el m3u8
 resultante carga.
 
-Cada `export {}` al principio de un `index.ts` es **sólo para `tsc`**: aísla
-el ámbito de ese fichero para que dos providers en el mismo proyecto no
-choquen sus `class Provider` / interfaces en un scope global compartido.
-Verificado que no aparece en el bundle final (`grep -c "^export" dist/**/index.js`
-da 0): esbuild lo reconoce como una lista de exports vacía y lo descarta.
+**Los `index.ts` NO deben llevar `export`/`import`.** Seanime no bundlea:
+transpila cada extensión con `esbuild.Transform` de un solo fichero (ver
+`internal/extension_repo/goja.go`, `JSVMTypescriptToJS`), que sólo quita los
+tipos — no resuelve módulos ni hace tree-shaking. Un `export {}` sobrevive tal
+cual al JS final y goja lo rechaza como palabra reservada
+(`invalid_payload: Unexpected reserved word`). Esto pasó una vez en este
+repo: se añadió para que `tsc` no chocara los `class Provider` de dos
+providers en un mismo *scope* global, y rompió AnimeAV1 en producción hasta
+el siguiente fix.
+
+Por eso el *typecheck* aísla cada provider con su propio `tsconfig.<nombre>.json`
+(`tsconfig.animeav1.json`, `tsconfig.jkanime.json`, ambos heredando de
+`tsconfig.base.json`) en vez de tocar el código fuente. `npm run typecheck`
+corre los dos por separado; el `tsconfig.json` de la raíz sólo es para que el
+editor resuelva tipos al abrir cualquier fichero y puede mostrar falsos
+"duplicate identifier" si tienes providers distintos abiertos a la vez — no
+es real, `npm run typecheck` es la fuente de verdad.
+
+Antes de subir cambios, `npm run verify-payload` (incluido en `npm run build`)
+reproduce la llamada exacta que hace Seanime a esbuild (mismo `Target`,
+`Loader: ts`, sin bundle) y falla si el resultado lleva `export`/`import` o no
+contiene un `class Provider` de nivel superior.

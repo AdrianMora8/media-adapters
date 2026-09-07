@@ -1,8 +1,5 @@
 /// <reference path="../../types/onlinestream-provider.d.ts" />
 
-// Sólo para `tsc`: ver la nota equivalente en src/animeav1/index.ts.
-export {}
-
 /**
  * JKAnime — provider de streaming en español para Seanime.
  *
