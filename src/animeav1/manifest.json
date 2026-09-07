@@ -1,0 +1,14 @@
+{
+  "id": "animeav1-es",
+  "name": "AnimeAV1 (ES)",
+  "version": "0.1.0",
+  "manifestURI": "https://raw.githubusercontent.com/AdrianMora8/media-adapters/main/src/animeav1/manifest.json",
+  "language": "typescript",
+  "type": "onlinestream-provider",
+  "description": "Streaming de anime en español (sub y dub) desde animeav1.com.",
+  "author": "Adrian",
+  "icon": "https://animeav1.com/favicon.png",
+  "lang": "es",
+  "website": "https://animeav1.com",
+  "payloadURI": "https://raw.githubusercontent.com/AdrianMora8/media-adapters/main/src/animeav1/index.ts"
+}
