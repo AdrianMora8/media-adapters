@@ -11,7 +11,7 @@
 import { transform } from "esbuild"
 import { readFileSync } from "node:fs"
 
-const targets = ["src/animeav1/index.ts", "src/jkanime/index.ts"]
+const targets = ["src/animeav1/index.ts", "src/jkanime/index.ts", "src/tioanime/index.ts"]
 
 let failed = false
 

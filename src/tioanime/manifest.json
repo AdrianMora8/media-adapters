@@ -1,0 +1,14 @@
+{
+  "id": "tioanime-es",
+  "name": "TioAnime (ES)",
+  "version": "0.1.0",
+  "manifestURI": "https://raw.githubusercontent.com/AdrianMora8/media-adapters/main/src/tioanime/manifest.json",
+  "language": "typescript",
+  "type": "onlinestream-provider",
+  "description": "Streaming de anime sub y latino desde tioanime.com.",
+  "author": "Adrian",
+  "icon": "https://tioanime.com/favicon.ico",
+  "lang": "es",
+  "website": "https://tioanime.com",
+  "payloadURI": "https://raw.githubusercontent.com/AdrianMora8/media-adapters/main/src/tioanime/index.ts"
+}

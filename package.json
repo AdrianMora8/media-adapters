@@ -4,14 +4,16 @@
   "private": true,
   "description": "Providers de streaming en español para Seanime",
   "scripts": {
-    "typecheck": "tsc --noEmit -p tsconfig.animeav1.json && tsc --noEmit -p tsconfig.jkanime.json",
+    "typecheck": "tsc --noEmit -p tsconfig.animeav1.json && tsc --noEmit -p tsconfig.jkanime.json && tsc --noEmit -p tsconfig.tioanime.json",
     "verify-payload": "node scripts/verify-payload.mjs",
     "build:av1": "esbuild src/animeav1/index.ts --bundle --format=esm --target=es2017 --platform=neutral --minify-whitespace --minify-syntax --tree-shaking=false --outfile=dist/animeav1/index.js",
     "build:jkanime": "esbuild src/jkanime/index.ts --bundle --format=esm --target=es2017 --platform=neutral --minify-whitespace --minify-syntax --tree-shaking=false --outfile=dist/jkanime/index.js",
-    "build": "npm run typecheck && npm run verify-payload && npm run build:av1 && npm run build:jkanime",
+    "build:tioanime": "esbuild src/tioanime/index.ts --bundle --format=esm --target=es2017 --platform=neutral --minify-whitespace --minify-syntax --tree-shaking=false --outfile=dist/tioanime/index.js",
+    "build": "npm run typecheck && npm run verify-payload && npm run build:av1 && npm run build:jkanime && npm run build:tioanime",
     "watch:av1": "npm run build:av1 -- --watch",
     "smoke:av1": "npm run build:av1 && node _smoke.mjs",
-    "smoke:jkanime": "npm run build:jkanime && node _smoke-jkanime.mjs"
+    "smoke:jkanime": "npm run build:jkanime && node _smoke-jkanime.mjs",
+    "smoke:tioanime": "npm run build:tioanime && node _smoke-tioanime.mjs"
   },
   "devDependencies": {
     "esbuild": "^0.24.0",
